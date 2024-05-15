@@ -1,0 +1,64 @@
+body {
+    background-color: #31292c;
+  }
+  
+  .containerTable {
+    margin-left: 450px;
+    margin-right: 450px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+  }
+  
+  .login-form, .registro-form {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+    padding: 40px;
+    margin-bottom: 20px; 
+  }
+  
+  .login-form h2, .registro-form h2 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+  }
+  
+  .form-control {
+    border-radius: 20px;
+    height: 50px;
+    font-size: 16px;
+  }
+  .btncargar{
+    width: 100px;
+    height: 50px;
+    margin-left: 10px;  
+  }
+  
+  .btn-login, .btn-registro, .btncargar{
+    border-radius: 20px;
+    padding: 12px 25px;
+    font-size: 18px;
+  }
+  
+  .table2 {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 28px;
+    color: #110f0f;
+  }
+  
+  .table {
+    background-color: #fff;
+    border-radius: 5  px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px; 
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+    color: #333;
+  }

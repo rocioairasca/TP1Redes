@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/estilos.css">
+
+    
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <form class="registro-form">
+    
+            <h2>Registro de usuarios</h2>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Usuario" name="username" required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Contraseña" name="password" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Apellido" name="apellido" required>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-primary btn-block btn-registro">Registrar</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <form class="login-form">
+    
+            <h2>Login</h2>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Usuario" name="username" required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Contraseña" name="password" required>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-primary btn-block btn-login">Ingresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="containerTable">
+
+      <h2 class="table2">Usuarios y Estados</h2>
+  <table id="userTable" class="table">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Estado</th>
+        <th>Rol</th>
+      </tr>
+    </thead>
+    <tbody class="table">
+      <!-- Aquí se insertarán las filas de la tabla dinámicamente -->
+    </tbody>
+  </table>
+  <button id="btnCargar" class="btn btn-primary btn-block btncargar">Cargar</button>
+
+    </div>
+
+
+  
+  </body>
+  </html>
+
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+  // Selecciona el formulario
+  const form = document.querySelector('.login-form');
+  const form2 = document.querySelector('.registro-form');
+
+
+  // Agrega un event listener para el click del botón
+  form.querySelector('.btn-login').addEventListener('click', async function(event) {
+    
+    // Obtiene los valores de los campos del formulario
+    const username = form.querySelector('[name="username"]').value;
+    const password = form.querySelector('[name="password"]').value;
+    form.querySelector('[name="username"]').value = "";
+    form.querySelector('[name="password"]').value = "";
+
+    // Construye un objeto con los valores
+    const data = {
+      username: username,
+      password: password
+    };
+
+    try {
+      // Envia la solicitud POST al servidor
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      // Verifica si la respuesta es exitosa (código de estado 200)
+      if (response.ok) {
+        // Extrae el cuerpo de la respuesta como JSON
+        const responseData = await response.json();
+        // Muestra el token en la consola del navegador
+        console.log('Token:', responseData.token);
+      } else {
+        const errorResponseData = await response.json();
+       console.error('Error:', errorResponseData.error);
+      }
+    } catch (error) {
+      // Si ocurre un error durante la solicitud, muestra el mensaje de error en la consola
+      console.error('Error de red:', error);
+    }
+  });
+
+  form2.querySelector('.btn-registro').addEventListener('click', async function(event) {
+    
+    // Obtiene los valores de los campos del formulario
+    const username2 = form2.querySelector('[name="username"]').value;
+    const password2 = form2.querySelector('[name="password"]').value;
+    const nombre = form2.querySelector('[name="nombre"]').value;
+    const apellido = form2.querySelector('[name="apellido"]').value;
+    form2.querySelector('[name="username"]').value = "";
+    form2.querySelector('[name="password"]').value = "";
+    form2.querySelector('[name="nombre"]').value = "";
+    form2.querySelector('[name="apellido"]').value = "";
+
+    // Construye un objeto con los valores
+    const data = {
+      user: username2,
+      password: password2,
+      nombre: nombre,
+      apellido: apellido
+    };
+
+    try {
+      // Envia la solicitud POST al servidor
+      const response = await fetch('http://localhost:8080/registro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      // Verifica si la respuesta es exitosa (código de estado 200)
+      if (response.ok) {
+  
+        console.log('Registro Exitoso');
+      } else {
+        // Si la respuesta no es exitosa, muestra el mensaje de error en la consola
+        console.error('Registro incorrecto:', response.statusText);
+      }
+    } catch (error) {
+      // Si ocurre un error durante la solicitud, muestra el mensaje de error en la consola
+      console.error('Error de red:', error);
+    }
+  });
+
+
+});
+
+document.getElementById('btnCargar').addEventListener('click', async function() {
+    try {
+      const response = await fetch('http://localhost:6001/usuarioyestado');
+      const data = await response.json();
+      const tableBody = document.querySelector('#userTable tbody');
+      // Limpiar filas existentes en la tabla
+      tableBody.innerHTML = '';
+      // Insertar filas nuevas con los datos obtenidos
+      data.forEach(function(row) {
+        const newRow = `<tr><td>${row.nombre_usuario}</td><td>${row.estado}</td><td>${row.rol}</td></tr>`;
+        tableBody.insertAdjacentHTML('beforeend', newRow);
+      });
+    } catch (error) {
+      console.error('Error al cargar usuarios y estados:', error);
+    }
+  });
+
+  </script>
